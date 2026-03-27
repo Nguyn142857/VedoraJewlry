@@ -1,9 +1,11 @@
 package com.jewelry.jewelryshopbackend.entity;
 
-import com.jewelry.jewelryshopbackend.enums.Role;
 import com.jewelry.jewelryshopbackend.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,10 +36,10 @@ public class User extends BaseEntity {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Role role;
-
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserStatus status;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRole> userRoles = new HashSet<>();
 }

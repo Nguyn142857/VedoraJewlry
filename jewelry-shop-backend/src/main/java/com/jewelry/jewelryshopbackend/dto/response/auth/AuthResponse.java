@@ -2,18 +2,21 @@ package com.jewelry.jewelryshopbackend.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@AllArgsConstructor
+import java.util.List;
+
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthResponse {
+
     private String token;
     private String tokenType;
     private Long userId;
     private String fullName;
     private String email;
-    private String role;
+    private List<String> roles;
 }

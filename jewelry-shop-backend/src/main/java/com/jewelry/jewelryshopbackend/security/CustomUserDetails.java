@@ -1,15 +1,16 @@
 package com.jewelry.jewelryshopbackend.security;
 
+import com.jewelry.jewelryshopbackend.entity.RolePermission;
 import com.jewelry.jewelryshopbackend.entity.User;
-import com.jewelry.jewelryshopbackend.enums.UserStatus;
-import lombok.Getter;
+import com.jewelry.jewelryshopbackend.entity.UserRole;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Getter
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
@@ -18,9 +19,29 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     @Override
-    public Collection<SimpleGrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        for (UserRole userRole : user.getUserRoles()) {
+            if (userRole.getRole() == null) {
+                continue;
+            }
+
+            authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
+
+            for (RolePermission rolePermission : userRole.getRole().getRolePermissions()) {
+                if (rolePermission.getPermission() != null) {
+                    authorities.add(new SimpleGrantedAuthority(rolePermission.getPermission().getName()));
+                }
+            }
+        }
+
+        return authorities;
     }
 
     @Override
@@ -40,7 +61,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.getStatus() != UserStatus.BLOCKED;
+        return true;
     }
 
     @Override
@@ -50,6 +71,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getStatus() == UserStatus.ACTIVE;
+        return user.getStatus() != null && user.getStatus().name().equals("ACTIVE");
     }
 }
