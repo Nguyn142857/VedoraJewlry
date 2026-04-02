@@ -3,6 +3,7 @@ package com.jewelry.jewelryshopbackend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,17 @@ public class JwtService {
 
     @Value("${app.jwt.expiration}")
     private long jwtExpiration;
+
+    @PostConstruct
+    void validateConfiguration() {
+        if (secretKey == null || secretKey.length() < 32) {
+            throw new IllegalStateException("JWT secret must be at least 32 characters");
+        }
+
+        if (jwtExpiration <= 0) {
+            throw new IllegalStateException("JWT expiration must be a positive number");
+        }
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

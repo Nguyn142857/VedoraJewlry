@@ -3,6 +3,7 @@ package com.jewelry.jewelryshopbackend.security;
 import com.jewelry.jewelryshopbackend.entity.RolePermission;
 import com.jewelry.jewelryshopbackend.entity.User;
 import com.jewelry.jewelryshopbackend.entity.UserRole;
+import com.jewelry.jewelryshopbackend.enums.UserStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,6 +72,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getStatus() != null && user.getStatus().name().equals("ACTIVE");
+        return user.getStatus() == UserStatus.ACTIVE;
     }
 }

@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "userRoles.role.rolePermissions",
             "userRoles.role.rolePermissions.permission"
     })
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmailIgnoreCase(String email);
 
-    boolean existsByEmail(String email);
+    boolean existsByEmailIgnoreCase(String email);
 }

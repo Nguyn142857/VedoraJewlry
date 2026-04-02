@@ -12,11 +12,7 @@ import java.math.BigDecimal;
 @Builder
 @Entity
 @Table(name = "cart_items")
-public class CartItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CartItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
