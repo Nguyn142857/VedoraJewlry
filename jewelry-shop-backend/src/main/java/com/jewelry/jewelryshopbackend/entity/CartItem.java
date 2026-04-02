@@ -11,7 +11,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "cart_items")
+@Table(
+        name = "cart_items",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_cart_items_cart_variant", columnNames = {"cart_id", "product_variant_id"})
+        }
+)
 public class CartItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

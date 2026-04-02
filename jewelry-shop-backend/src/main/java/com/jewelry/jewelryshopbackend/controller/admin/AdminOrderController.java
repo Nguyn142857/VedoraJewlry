@@ -7,6 +7,7 @@ import com.jewelry.jewelryshopbackend.payload.ApiResponse;
 import com.jewelry.jewelryshopbackend.payload.PageResponse;
 import com.jewelry.jewelryshopbackend.service.order.OrderCommandService;
 import com.jewelry.jewelryshopbackend.service.order.OrderQueryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +53,7 @@ public class AdminOrderController {
     @PatchMapping("/{orderId}/status")
     public ResponseEntity<ApiResponse<OrderResponse>> updateStatus(
             @PathVariable Long orderId,
-            @RequestBody OrderStatusUpdateRequest request
+            @Valid @RequestBody OrderStatusUpdateRequest request
     ) {
         OrderResponse response = orderCommandService.updateStatus(orderId, request);
         return ResponseEntity.ok(ApiResponse.success(response, "Order status updated successfully"));

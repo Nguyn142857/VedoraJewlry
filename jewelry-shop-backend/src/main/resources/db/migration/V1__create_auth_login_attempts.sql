@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS auth_login_attempts (
     CONSTRAINT pk_auth_login_attempts PRIMARY KEY (principal)
 );
 
-CREATE INDEX IF NOT EXISTS idx_auth_login_attempts_locked_until
+CREATE INDEX idx_auth_login_attempts_locked_until
     ON auth_login_attempts (locked_until);

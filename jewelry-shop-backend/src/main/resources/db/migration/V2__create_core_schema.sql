@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS categories (
     CONSTRAINT uk_category_slug UNIQUE (slug)
 );
 
-CREATE INDEX IF NOT EXISTS idx_category_slug ON categories(slug);
-CREATE INDEX IF NOT EXISTS idx_category_status ON categories(status);
+CREATE INDEX idx_category_slug ON categories(slug);
+CREATE INDEX idx_category_status ON categories(status);
 
 CREATE TABLE IF NOT EXISTS products (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS products (
     CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id);
-CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
+CREATE INDEX idx_products_category_id ON products(category_id);
+CREATE INDEX idx_products_status ON products(status);
 
 CREATE TABLE IF NOT EXISTS product_variants (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS product_variants (
     CONSTRAINT fk_product_variants_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_product_variants_product_id ON product_variants(product_id);
-CREATE INDEX IF NOT EXISTS idx_product_variants_status ON product_variants(status);
-CREATE INDEX IF NOT EXISTS idx_product_variants_deleted ON product_variants(deleted);
+CREATE INDEX idx_product_variants_product_id ON product_variants(product_id);
+CREATE INDEX idx_product_variants_status ON product_variants(status);
+CREATE INDEX idx_product_variants_deleted ON product_variants(deleted);
 
 CREATE TABLE IF NOT EXISTS product_images (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -132,9 +132,9 @@ CREATE TABLE IF NOT EXISTS product_images (
     CONSTRAINT fk_product_images_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_product_images_product_id ON product_images(product_id);
-CREATE INDEX IF NOT EXISTS idx_product_images_is_main ON product_images(is_main);
-CREATE INDEX IF NOT EXISTS idx_product_images_deleted ON product_images(deleted);
+CREATE INDEX idx_product_images_product_id ON product_images(product_id);
+CREATE INDEX idx_product_images_is_main ON product_images(is_main);
+CREATE INDEX idx_product_images_deleted ON product_images(deleted);
 
 CREATE TABLE IF NOT EXISTS carts (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -159,8 +159,8 @@ CREATE TABLE IF NOT EXISTS cart_items (
     CONSTRAINT fk_cart_items_variant FOREIGN KEY (product_variant_id) REFERENCES product_variants(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_cart_items_cart_id ON cart_items(cart_id);
-CREATE INDEX IF NOT EXISTS idx_cart_items_variant_id ON cart_items(product_variant_id);
+CREATE INDEX idx_cart_items_cart_id ON cart_items(cart_id);
+CREATE INDEX idx_cart_items_variant_id ON cart_items(product_variant_id);
 
 CREATE TABLE IF NOT EXISTS orders (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -184,9 +184,9 @@ CREATE TABLE IF NOT EXISTS orders (
     CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
-CREATE INDEX IF NOT EXISTS idx_orders_order_status ON orders(order_status);
-CREATE INDEX IF NOT EXISTS idx_orders_payment_status ON orders(payment_status);
+CREATE INDEX idx_orders_user_id ON orders(user_id);
+CREATE INDEX idx_orders_order_status ON orders(order_status);
+CREATE INDEX idx_orders_payment_status ON orders(payment_status);
 
 CREATE TABLE IF NOT EXISTS order_items (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -204,5 +204,5 @@ CREATE TABLE IF NOT EXISTS order_items (
     CONSTRAINT fk_order_items_variant FOREIGN KEY (product_variant_id) REFERENCES product_variants(id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
-CREATE INDEX IF NOT EXISTS idx_order_items_variant_id ON order_items(product_variant_id);
+CREATE INDEX idx_order_items_order_id ON order_items(order_id);
+CREATE INDEX idx_order_items_variant_id ON order_items(product_variant_id);

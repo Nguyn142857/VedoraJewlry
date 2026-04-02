@@ -1,0 +1,215 @@
+{
+  "info": {
+    "_postman_id": "c6cf4821-4349-42e6-a1dc-781f1e9f85c4",
+    "name": "Jewelry Shop Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Frontend Tester\",\n  \"email\": \"fe-tester@example.com\",\n  \"password\": \"Password123\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/register"
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"fe-tester@example.com\",\n  \"password\": \"Password123\"\n}"
+        },
+        "url": "{{baseUrl}}/api/auth/login"
+      }
+    },
+    {
+      "name": "Public - Categories",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/categories?page=0&size=10&sortBy=createdAt&sortDir=desc"
+      }
+    },
+    {
+      "name": "Public - Products",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/products?page=0&size=10&sortBy=createdAt&sortDir=desc"
+      }
+    },
+    {
+      "name": "Public - Product Detail by Slug",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/products/{{productSlug}}"
+      }
+    },
+    {
+      "name": "Public - Product Variants",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/products/{{productSlug}}/variants?page=0&size=10"
+      }
+    },
+    {
+      "name": "Public - Product Images",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/products/{{productSlug}}/images?page=0&size=10"
+      }
+    },
+    {
+      "name": "User - Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/user/profile"
+      }
+    },
+    {
+      "name": "User - Update Profile",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Frontend Tester Updated\",\n  \"phone\": \"+84901234567\",\n  \"address\": \"HCM City\"\n}"
+        },
+        "url": "{{baseUrl}}/api/user/profile"
+      }
+    },
+    {
+      "name": "User - Get Cart",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/user/cart"
+      }
+    },
+    {
+      "name": "User - Add Cart Item",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productVariantId\": {{variantId}},\n  \"quantity\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/user/cart/items"
+      }
+    },
+    {
+      "name": "User - Create Order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paymentMethod\": \"COD\",\n  \"receiverName\": \"Frontend Tester\",\n  \"receiverPhone\": \"0901234567\",\n  \"receiverAddress\": \"HCM City\",\n  \"shippingFee\": 0,\n  \"discountAmount\": 0\n}"
+        },
+        "url": "{{baseUrl}}/api/user/orders"
+      }
+    },
+    {
+      "name": "User - Get My Orders",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/user/orders?page=0&size=10"
+      }
+    },
+    {
+      "name": "Admin - Get Orders",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/admin/orders?page=0&size=10"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "productSlug",
+      "value": "sample-product-slug"
+    },
+    {
+      "key": "variantId",
+      "value": "1"
+    }
+  ]
+}
