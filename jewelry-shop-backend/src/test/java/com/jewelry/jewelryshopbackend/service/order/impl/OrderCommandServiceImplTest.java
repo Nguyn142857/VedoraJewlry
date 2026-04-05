@@ -87,8 +87,6 @@ class OrderCommandServiceImplTest {
         request.setReceiverName("Receiver");
         request.setReceiverPhone("0123");
         request.setReceiverAddress("Address");
-        request.setShippingFee(BigDecimal.TEN);
-        request.setDiscountAmount(BigDecimal.ONE);
 
         when(currentUserService.requireCurrentUser()).thenReturn(user);
         when(cartDomainService.getOrCreateCart(user)).thenReturn(cart);

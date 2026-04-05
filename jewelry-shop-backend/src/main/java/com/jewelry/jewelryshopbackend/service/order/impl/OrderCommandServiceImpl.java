@@ -36,6 +36,9 @@ import java.util.List;
 @Transactional
 public class OrderCommandServiceImpl implements OrderCommandService {
 
+    private static final BigDecimal STANDARD_SHIPPING_FEE = new BigDecimal("30000");
+    private static final BigDecimal DEFAULT_DISCOUNT_AMOUNT = BigDecimal.ZERO;
+
     private final CurrentUserService currentUserService;
     private final CartDomainService cartDomainService;
     private final CartItemRepository cartItemRepository;
@@ -87,8 +90,8 @@ public class OrderCommandServiceImpl implements OrderCommandService {
             variant.setStockQuantity(variant.getStockQuantity() - quantity);
         }
 
-        BigDecimal shippingFee = request.getShippingFee() == null ? BigDecimal.ZERO : request.getShippingFee();
-        BigDecimal discountAmount = request.getDiscountAmount() == null ? BigDecimal.ZERO : request.getDiscountAmount();
+        BigDecimal shippingFee = calculateShippingFee(totalAmount);
+        BigDecimal discountAmount = calculateDiscountAmount(totalAmount);
         orderValidator.validateAmount(shippingFee, discountAmount, totalAmount);
 
         Order order = Order.builder()
@@ -181,5 +184,19 @@ public class OrderCommandServiceImpl implements OrderCommandService {
         }
         String normalized = value.trim();
         return normalized.isBlank() ? null : normalized;
+    }
+
+    private BigDecimal calculateShippingFee(BigDecimal totalAmount) {
+        if (totalAmount == null || totalAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            return BigDecimal.ZERO;
+        }
+        return STANDARD_SHIPPING_FEE;
+    }
+
+    private BigDecimal calculateDiscountAmount(BigDecimal totalAmount) {
+        if (totalAmount == null || totalAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            return BigDecimal.ZERO;
+        }
+        return DEFAULT_DISCOUNT_AMOUNT;
     }
 }

@@ -15,9 +15,11 @@ import java.util.Set;
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
+    private final Set<GrantedAuthority> authorities;
 
     public CustomUserDetails(User user) {
         this.user = user;
+        this.authorities = extractAuthorities(user);
     }
 
     public User getUser() {
@@ -26,22 +28,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-
-        for (UserRole userRole : user.getUserRoles()) {
-            if (userRole.getRole() == null) {
-                continue;
-            }
-
-            authorities.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
-
-            for (RolePermission rolePermission : userRole.getRole().getRolePermissions()) {
-                if (rolePermission.getPermission() != null) {
-                    authorities.add(new SimpleGrantedAuthority(rolePermission.getPermission().getName()));
-                }
-            }
-        }
-
         return authorities;
     }
 
@@ -73,5 +59,25 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.getStatus() == UserStatus.ACTIVE;
+    }
+
+    private Set<GrantedAuthority> extractAuthorities(User user) {
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+
+        for (UserRole userRole : user.getUserRoles()) {
+          if (userRole.getRole() == null) {
+              continue;
+          }
+
+          grantedAuthorities.add(new SimpleGrantedAuthority(userRole.getRole().getName()));
+
+          for (RolePermission rolePermission : userRole.getRole().getRolePermissions()) {
+              if (rolePermission.getPermission() != null) {
+                  grantedAuthorities.add(new SimpleGrantedAuthority(rolePermission.getPermission().getName()));
+              }
+          }
+        }
+
+        return Set.copyOf(grantedAuthorities);
     }
 }

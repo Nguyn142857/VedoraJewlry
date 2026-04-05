@@ -1,6 +1,7 @@
 package com.jewelry.jewelryshopbackend.controller.public_api;
 
 import com.jewelry.jewelryshopbackend.dto.request.auth.LoginRequest;
+import com.jewelry.jewelryshopbackend.dto.request.auth.GoogleLoginRequest;
 import com.jewelry.jewelryshopbackend.dto.request.auth.RegisterRequest;
 import com.jewelry.jewelryshopbackend.dto.response.auth.AuthResponse;
 import com.jewelry.jewelryshopbackend.payload.ApiResponse;
@@ -29,5 +30,11 @@ public class AuthController {
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(ApiResponse.success(response, "Login success"));
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<ApiResponse<AuthResponse>> googleLogin(@Valid @RequestBody GoogleLoginRequest request) {
+        AuthResponse response = authService.googleLogin(request);
+        return ResponseEntity.ok(ApiResponse.success(response, "Google login success"));
     }
 }
