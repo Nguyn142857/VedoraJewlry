@@ -1,15 +1,14 @@
 package com.jewelry.jewelryshopbackend.repository;
 
-import com.jewelry.jewelryshopbackend.entity.Role;
-import com.jewelry.jewelryshopbackend.entity.User;
 import com.jewelry.jewelryshopbackend.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
-    boolean existsByUserAndRole(User user, Role role);
-    Optional<UserRole> findByUserAndRole(User user, Role role);
-    List<UserRole> findByUser(User user);
+
+    @Modifying
+    @Query("delete from UserRole ur where ur.user.id = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 }

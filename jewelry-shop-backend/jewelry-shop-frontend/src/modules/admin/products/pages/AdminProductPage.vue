@@ -181,6 +181,10 @@ onMounted(async () => {
             <span>Thumbnail URL</span>
             <input v-model.trim="form.thumbnail" type="url" />
           </label>
+
+          <div v-if="form.thumbnail" class="thumbnail-preview">
+            <img :src="form.thumbnail" alt="Preview thumbnail" class="thumbnail-preview-image"/>
+          </div>
           <label class="field checkbox-field">
             <input v-model="form.status" type="checkbox" />
             <span>Đang kinh doanh</span>
@@ -225,6 +229,7 @@ onMounted(async () => {
           <table class="admin-table">
             <thead>
               <tr>
+                <th>Ảnh</th>
                 <th>Sản phẩm</th>
                 <th>Danh mục</th>
                 <th>Giá</th>
@@ -233,21 +238,38 @@ onMounted(async () => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="product in products" :key="product.id">
-                <td>
-                  <div class="stack-sm">
-                    <strong>{{ product.name }}</strong>
-                    <span class="muted-label muted-inline">{{ product.slug }}</span>
-                  </div>
-                </td>
-                <td>{{ product.categoryName }}</td>
-                <td>{{ formatCurrency(product.basePrice) }}</td>
-                <td>{{ product.status ? 'ACTIVE' : 'INACTIVE' }}</td>
-                <td class="action-row">
-                  <button class="ghost-button" type="button" @click="fillForm(product)">Sửa</button>
-                  <button class="ghost-button danger-button" type="button" @click="handleDelete(product)">Xóa</button>
-                </td>
-              </tr>
+             <tr v-for="product in products" :key="product.id">
+               <td>
+                 <RouterLink :to="`/products/${product.slug}`" class="product-image-link">
+                   <div class="product-thumb">
+                     <img
+                       v-if="product.thumbnail"
+                       :src="product.thumbnail"
+                       :alt="product.name"
+                       class="product-thumb-image"
+                     />
+                     <div v-else class="product-thumb-fallback">No image</div>
+                   </div>
+                 </RouterLink>
+               </td>
+
+               <td>
+                 <RouterLink :to="`/products/${product.slug}`" class="product-link">
+                   <div class="stack-sm">
+                     <strong>{{ product.name }}</strong>
+                     <span class="muted-label muted-inline">{{ product.slug }}</span>
+                   </div>
+                 </RouterLink>
+               </td>
+
+               <td>{{ product.categoryName }}</td>
+               <td>{{ formatCurrency(product.basePrice) }}</td>
+               <td>{{ product.status ? 'ACTIVE' : 'INACTIVE' }}</td>
+               <td class="action-row">
+                 <button class="ghost-button" type="button" @click="fillForm(product)">Sửa</button>
+                 <button class="ghost-button danger-button" type="button" @click="handleDelete(product)">Xóa</button>
+               </td>
+             </tr>
             </tbody>
           </table>
         </div>
@@ -255,3 +277,46 @@ onMounted(async () => {
     </section>
   </div>
 </template>
+
+<style scoped>
+.product-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-thumb-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-thumb-fallback {
+  font-size: 0.7rem;
+  color: #888;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.thumbnail-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f3f3f3;
+  border: 1px solid #e5e5e5;
+}
+
+.thumbnail-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+</style>

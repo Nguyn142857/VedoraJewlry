@@ -10,6 +10,7 @@ import AdminImagePage from '@/modules/admin/images/pages/AdminImagePage.vue'
 import AdminOrderPage from '@/modules/admin/orders/pages/AdminOrderPage.vue'
 import AdminProductPage from '@/modules/admin/products/pages/AdminProductPage.vue'
 import AdminVariantPage from '@/modules/admin/variants/pages/AdminVariantPage.vue'
+import AdminAccountPage from '@/modules/admin/accounts/pages/AdminAccountPage.vue'
 import ForgotPasswordPage from '@/modules/auth/pages/ForgotPasswordPage.vue'
 import LoginPage from '@/modules/auth/pages/LoginPage.vue'
 import RegisterPage from '@/modules/auth/pages/RegisterPage.vue'
@@ -66,6 +67,7 @@ const router = createRouter({
         { path: 'variants', name: 'admin-variants', component: AdminVariantPage },
         { path: 'images', name: 'admin-images', component: AdminImagePage },
         { path: 'orders', name: 'admin-orders', component: AdminOrderPage },
+        { path: 'accounts', name: 'admin-account', component: AdminAccountPage },
       ],
     },
   ],

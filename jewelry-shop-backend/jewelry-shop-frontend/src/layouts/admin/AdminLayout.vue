@@ -11,6 +11,7 @@ import AppHeader from '@/shared/components/navigation/AppHeader.vue'
       <aside class="panel-nav">
         <h2>Admin</h2>
         <RouterLink to="/admin">Dashboard</RouterLink>
+        <RouterLink to="/admin/accounts">Accounts</RouterLink>
         <RouterLink to="/admin/categories">Categories</RouterLink>
         <RouterLink to="/admin/products">Products</RouterLink>
         <RouterLink to="/admin/variants">Variants</RouterLink>

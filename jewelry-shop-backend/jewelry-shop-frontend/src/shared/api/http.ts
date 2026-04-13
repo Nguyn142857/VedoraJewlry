@@ -41,14 +41,24 @@ httpClient.interceptors.request.use((config) => {
   const requestConfig = config as RequestConfigWithAuthToken
 
   if (authSnapshot?.token) {
-    config.headers.Authorization = `${authSnapshot.tokenType} ${authSnapshot.token}`
+    const tokenType =
+      authSnapshot.tokenType && authSnapshot.tokenType.trim()
+        ? authSnapshot.tokenType
+        : 'Bearer'
+
+    config.headers.Authorization = `${tokenType} ${authSnapshot.token}`
     requestConfig._authToken = authSnapshot.token
   }
 
   return config
 })
 
-async function request<T>(method: AxiosRequestConfig['method'], path: string, data?: unknown, options?: RequestOptions) {
+async function request<T>(
+  method: AxiosRequestConfig['method'],
+  path: string,
+  data?: unknown,
+  options?: RequestOptions,
+) {
   try {
     const response = await httpClient.request<ApiResponse<T>>({
       ...options,
@@ -76,7 +86,11 @@ async function request<T>(method: AxiosRequestConfig['method'], path: string, da
       httpHandlers.onForbidden?.()
     }
 
-    throw new HttpError(payload?.message ?? axiosError.message ?? 'Request failed', status, payload)
+    throw new HttpError(
+      payload?.message ?? axiosError.message ?? 'Request failed',
+      status,
+      payload,
+    )
   }
 }
 
@@ -86,9 +100,18 @@ export function registerHttpHandlers(handlers: HttpHandlers) {
 }
 
 export const http = {
-  get: <T>(path: string, options?: RequestOptions) => request<T>('GET', path, undefined, options),
-  post: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>('POST', path, body, options),
-  put: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>('PUT', path, body, options),
-  patch: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>('PATCH', path, body, options),
-  delete: <T>(path: string, options?: RequestOptions) => request<T>('DELETE', path, undefined, options),
+  get: <T>(path: string, options?: RequestOptions) =>
+    request<T>('GET', path, undefined, options),
+
+  post: <T>(path: string, body?: unknown, options?: RequestOptions) =>
+    request<T>('POST', path, body, options),
+
+  put: <T>(path: string, body?: unknown, options?: RequestOptions) =>
+    request<T>('PUT', path, body, options),
+
+  patch: <T>(path: string, body?: unknown, options?: RequestOptions) =>
+    request<T>('PATCH', path, body, options),
+
+  delete: <T>(path: string, options?: RequestOptions) =>
+    request<T>('DELETE', path, undefined, options),
 }

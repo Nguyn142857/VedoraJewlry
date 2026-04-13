@@ -5,6 +5,7 @@ import type {
   ProductImagePage,
   ProductListFilters,
   ProductPage,
+  ProductSummary,
   VariantPage,
 } from '@/modules/catalog/types/catalog'
 
@@ -25,7 +26,9 @@ function buildQuery(params: Record<string, string | number | undefined>) {
 
 export const catalogApi = {
   getCategories() {
-    return http.get<CategoryPage>(`/api/categories${buildQuery({ page: 0, size: 100, sortBy: 'name', sortDir: 'asc' })}`)
+    return http.get<CategoryPage>(
+      `/api/categories${buildQuery({ page: 0, size: 100, sortBy: 'name', sortDir: 'asc' })}`,
+    )
   },
   getProducts(filters: ProductListFilters) {
     return http.get<ProductPage>(
@@ -41,13 +44,20 @@ export const catalogApi = {
       })}`,
     )
   },
+  getBestSellers(limit = 4) {
+    return http.get<ProductSummary[]>(`/api/products/best-sellers${buildQuery({ limit })}`)
+  },
   getProductDetail(slug: string) {
     return http.get<ProductDetail>(`/api/products/${slug}`)
   },
   getProductVariants(slug: string) {
-    return http.get<VariantPage>(`/api/products/${slug}/variants${buildQuery({ page: 0, size: 100, sortBy: 'price', sortDir: 'asc' })}`)
+    return http.get<VariantPage>(
+      `/api/products/${slug}/variants${buildQuery({ page: 0, size: 100, sortBy: 'price', sortDir: 'asc' })}`,
+    )
   },
   getProductImages(slug: string) {
-    return http.get<ProductImagePage>(`/api/products/${slug}/images${buildQuery({ page: 0, size: 20, sortBy: 'sortOrder', sortDir: 'asc' })}`)
+    return http.get<ProductImagePage>(
+      `/api/products/${slug}/images${buildQuery({ page: 0, size: 20, sortBy: 'sortOrder', sortDir: 'asc' })}`,
+    )
   },
 }
